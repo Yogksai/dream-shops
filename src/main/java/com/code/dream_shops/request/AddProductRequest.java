@@ -9,7 +9,9 @@ import jakarta.persistence.OneToMany;
 
 import java.math.BigDecimal;
 import java.util.List;
+    
 
+@Data
 public class AddProductRequest {
     private Long id;
     private String name;

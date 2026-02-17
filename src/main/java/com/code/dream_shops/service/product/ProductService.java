@@ -1,7 +1,9 @@
 package com.code.dream_shops.service.product;
 
 import com.code.dream_shops.exceptions.ProductNotFoundException;
+import com.code.dream_shops.model.Category;
 import com.code.dream_shops.model.Product;
+import com.code.dream_shops.request.AddProductRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.code.dream_shops.repository.ProductRepository;
@@ -14,8 +16,19 @@ import java.util.List;
 public class ProductService implements IProductService {
     private ProductRepository productRepository;
     @Override
-    public Product addProduct(Product product) {
+    public Product addProduct(AddProductRequest product) {
         return null;
+    }
+
+    private Product createProduct(AddProductRequest request,Category category){
+        return new Product(
+                request.getName(),
+                request.getBrand(),
+                request.getDescription(),
+                request.getPrice(),
+                request.getInventory(),
+                request.getCategory()
+        );
     }
 
     @Override
