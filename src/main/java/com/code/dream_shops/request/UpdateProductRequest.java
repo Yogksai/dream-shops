@@ -1,15 +1,13 @@
 package com.code.dream_shops.request;
 
 import com.code.dream_shops.model.Category;
-
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.List;
-    
+
 
 @Data
-public class AddProductRequest {
+public class UpdateProductRequest {
     private Long id;
     private String name;
     private String description;
@@ -19,7 +17,4 @@ public class AddProductRequest {
 
     private String brand;
     private Category category;
-
 }
-
-

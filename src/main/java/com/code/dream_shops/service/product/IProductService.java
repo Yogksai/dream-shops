@@ -2,6 +2,8 @@ package com.code.dream_shops.service.product;
 
 import com.code.dream_shops.model.Product;
 import com.code.dream_shops.request.AddProductRequest;
+import com.code.dream_shops.request.UpdateProductRequest;
+
 import java.util.List;
 
 public interface IProductService {
@@ -9,6 +11,7 @@ public interface IProductService {
 
     Product getProductById(Long id);
     void deleteProductBuId(Long id);
+    Product updateProduct(UpdateProductRequest product, Long productId);
     List<Product> getAllProducts();
     List<Product> getProductsByCategory(String category);
     List<Product> getProductsByName(String name);
