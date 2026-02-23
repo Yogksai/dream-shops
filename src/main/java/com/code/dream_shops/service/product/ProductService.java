@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ProductService implements IProductService {
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
     private CategoryRepository categoryRepository;
     @Override
     public Product addProduct(AddProductRequest request) {
@@ -49,7 +49,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public void deleteProductBuId(Long id) {
+    public void deleteProductById(Long id) {
         productRepository.findById(id).ifPresentOrElse(productRepository::delete,
                 () -> {throw new ProductNotFoundException("Product Not Found");});
     }
