@@ -21,7 +21,7 @@ public class Image {
     private Long id;
     private String fileName;
     private String fileType;
-    private String url;
+    private String downloadUrl;
 
     @Lob
     @Column(columnDefinition = "BYTEA")
