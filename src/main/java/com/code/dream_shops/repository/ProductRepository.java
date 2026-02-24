@@ -1,5 +1,6 @@
 package com.code.dream_shops.repository;
 
+import com.code.dream_shops.dto.ProductDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.code.dream_shops.model.Product;
 
@@ -17,7 +18,8 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
 
     List<Product> findByBrandAndCategoryName(String brand, String category);
 
-    List<Product> findByBrandAndName(String brand);
+    List<Product> findByBrandAndName(String brand, String name);
 
     Long countByBrandAndName(String brand, String name);
+
 }

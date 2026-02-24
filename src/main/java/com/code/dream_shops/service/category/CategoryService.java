@@ -1,7 +1,6 @@
 package com.code.dream_shops.service.category;
 
 import com.code.dream_shops.exceptions.AlreadyExistsException;
-import com.code.dream_shops.exceptions.ProductNotFoundException;
 import com.code.dream_shops.exceptions.ResourceNotFoundException;
 import com.code.dream_shops.model.Category;
 import com.code.dream_shops.repository.CategoryRepository;

@@ -1,6 +1,7 @@
 package com.code.dream_shops.service.product;
 
-import com.code.dream_shops.exceptions.ProductNotFoundException;
+
+import com.code.dream_shops.exceptions.ResourceNotFoundException;
 import com.code.dream_shops.model.Category;
 import com.code.dream_shops.model.Product;
 import com.code.dream_shops.request.AddProductRequest;
@@ -17,7 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductService implements IProductService {
     private final ProductRepository productRepository;
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
     @Override
     public Product addProduct(AddProductRequest request) {
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName())).orElseGet(() -> {
@@ -35,7 +36,7 @@ public class ProductService implements IProductService {
                 request.getDescription(),
                 request.getPrice(),
                 request.getInventory(),
-                request.getCategory()
+                category
         );
     }
 
@@ -45,13 +46,13 @@ public class ProductService implements IProductService {
     @Override
     public Product getProductById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(()-> new ProductNotFoundException("Product Not Found"));
+                .orElseThrow(()-> new ResourceNotFoundException("Product Not Found"));
     }
 
     @Override
     public void deleteProductById(Long id) {
         productRepository.findById(id).ifPresentOrElse(productRepository::delete,
-                () -> {throw new ProductNotFoundException("Product Not Found");});
+                () -> {throw new ResourceNotFoundException("Product Not Found");});
     }
 
     @Override
@@ -59,7 +60,7 @@ public class ProductService implements IProductService {
         return productRepository.findById(productId)
                 .map(existingProduct -> updateExistingProduct(existingProduct, request))
                 .map(productRepository :: save)
-                .orElseThrow(() -> new ProductNotFoundException("Product Not Found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product Not Found"));
     }
 
     private Product updateExistingProduct(Product existingProduct, UpdateProductRequest request){
@@ -69,7 +70,7 @@ public class ProductService implements IProductService {
         existingProduct.setPrice(request.getPrice());
         existingProduct.setInventory(request.getInventory());
         Category category = categoryRepository.findByName(request.getCategory().getName());
-        existingProduct.setCategory(request.getCategory());
+        existingProduct.setCategory(category);
         return existingProduct;
     }
 
@@ -95,7 +96,7 @@ public class ProductService implements IProductService {
 
     @Override
     public List<Product> getProductsByBrandAndName(String brand, String name) {
-        return productRepository.findByBrandAndName(brand);
+        return productRepository.findByBrandAndName(brand,name);
     }
 
     @Override
