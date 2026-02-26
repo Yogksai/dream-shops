@@ -1,14 +1,19 @@
 package com.code.dream_shops.service.product;
 
 
+import com.code.dream_shops.controller.ImageController;
+import com.code.dream_shops.dto.ImageDto;
 import com.code.dream_shops.exceptions.ResourceNotFoundException;
 import com.code.dream_shops.model.Category;
 import com.code.dream_shops.model.Product;
+import com.code.dream_shops.model.Image;
 import com.code.dream_shops.request.AddProductRequest;
 import com.code.dream_shops.request.UpdateProductRequest;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import com.code.dream_shops.repository.*;
+import com.code.dream_shops.dto.ProductDto;
 
 
 import java.util.List;
@@ -19,6 +24,8 @@ import java.util.Optional;
 public class ProductService implements IProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ImageRepository imageRepository;
+    private final ModelMapper modelMapper;
     @Override
     public Product addProduct(AddProductRequest request) {
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName())).orElseGet(() -> {
@@ -114,4 +121,20 @@ public class ProductService implements IProductService {
          return productRepository.countByBrandAndName(brand,name);
     }
 
+    @Override
+    public List<ProductDto> getConvertedProducts(List<Product> products){
+        return products.stream().map(this::convertToDto).toList();
+    }
+
+    @Override
+    public ProductDto convertToDto(Product product){
+        ProductDto productDto = new ProductDto();
+        modelMapper.map(product, productDto);
+        List<Image> images = imageRepository.findByProductId(product.getId());
+        List<ImageDto> imageDtos = images.stream()
+                .map(image -> modelMapper.map(image, ImageDto.class))
+                .toList();
+        productDto.setImages(imageDtos);
+        return productDto;
+    }
 }
