@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.ManyToAny;
 
 import java.sql.Blob;
+import java.sql.Types;
 
 
 @Getter
@@ -24,8 +26,9 @@ public class Image {
     private String downloadUrl;
 
     @Lob
-    @Column(columnDefinition = "BYTEA")
-    private Blob image;
+    @Column(name = "image")
+    @JdbcTypeCode(Types.BINARY)
+    private byte[] image;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

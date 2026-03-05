@@ -11,9 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +41,7 @@ public class ImageService implements IImageService{
                 Image image = new Image();
                 image.setFileName(file.getOriginalFilename());
                 image.setFileType(file.getContentType());
-                image.setImage(new SerialBlob(file.getBytes()));
+                image.setImage(file.getBytes());
                 image.setProduct(product);
 
                 String downloadUrl = "api/v1/images/image/donwload" + image.getId();
@@ -58,7 +56,7 @@ public class ImageService implements IImageService{
                 imageDto.setDownloadUrl(savedImage.getDownloadUrl());
                 savedImageDto.add(imageDto);
 
-            } catch(IOException | SQLException e){
+            } catch(IOException e){
                 throw new RuntimeException(e.getMessage());
             }
         }
@@ -71,9 +69,9 @@ public class ImageService implements IImageService{
         try {
             image.setFileName(file.getOriginalFilename());
             image.setFileName(file.getOriginalFilename());
-            image.setImage(new SerialBlob(file.getBytes()));
+            image.setImage(file.getBytes());
             imageRepository.save(image);
-        } catch (IOException | SQLException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
